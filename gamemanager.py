@@ -28,23 +28,29 @@ class TicTacToe:
             f"Player {self.current_player.player_num}, where would you like to play? "
             "Enter the row number and column number separated by a comma.\n"
         )
-        if self.loc_input == "Q":
+        if self.loc_input.upper() == "Q":
             print("Exiting Game")
             return False
 
         self.clean_input()
 
-        if self.selected_location in self.board.available_locations:
-            self.board.update_board(self.selected_location, self.current_player.symbol)
-            self.current_player.locations.append(self.selected_location)
-            self.current_player.check_for_win()
-            self.current_round += 1
-            self.current_player = (
-                self.player1 if self.current_round % 2 == 0 else self.player2
-            )
-            return self.check_for_winner()
+        if self.selected_location:
+            if self.selected_location in self.board.available_locations:
+                self.board.update_board(
+                    self.selected_location, self.current_player.symbol
+                )
+                self.current_player.locations.append(self.selected_location)
+                self.current_player.check_for_win()
+                self.current_round += 1
+                self.current_player = (
+                    self.player1 if self.current_round % 2 == 0 else self.player2
+                )
+                return self.check_for_winner()
+            else:
+                print("That is not a valid location, try again.")
+                return self.play_round()
         else:
-            print("That is not a valid location, try again.")
+            print("That is not a valid location, try again or press Q to exit.")
             return self.play_round()
 
     def check_for_winner(self):
